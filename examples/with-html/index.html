@@ -49,6 +49,9 @@
 				onSuccess: response => {
 					result.classList.add('success');
 					result.innerHTML = JSON.stringify(response, null, 2);
+					
+					// Ok, now verify the `proof`:
+					// https://docs.worldcoin.org/id/idkit#verify-the-proof
 				},
 				onError: response => {
 					result.classList.remove('success');
