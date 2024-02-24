@@ -4,10 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>IDKit Playground</title>
+		<title>Hello WLD.</title>
 
 		<style>
-			#root {
+			body {
 				display: grid;
 				justify-content: center;
 				justify-items: center;
@@ -15,47 +15,49 @@
 				min-height: 100vh;
 				gap: 24px;
 			}
-
-			#heading {
-				font-size: 56px;
-				text-transform: uppercase;
-			}
-
 			#open-idkit {
-				background-color: #4f46e5;
-				color: #fff;
-				padding: 8px 16px;
-				border-radius: 4px;
+				font-size: 10vw;
 				cursor: pointer;
 			}
-		</style>
+			.result {
+				display: block;
+				width: 80vw;
+				height: 20em;
+				color: red;
+			}
+			.success {
+				color: green;
+			}
+			.result:not(.success) + .success {
+				display: none;
+			}
+			</style>
 	</head>
 	<body>
-		<div id="root">
-			<h1 id="heading">idkit-js</h1>
-			<button id="open-idkit">Open</button>
-		</div>
+		<button id="open-idkit">Hello WLD.</button>
+		<textarea class="result" readonly></textarea>
+		<p class="success">こんにちは、ヒト (あるいは虹彩を持つ何か)</p>
 
 		<script type="module">
 			import '@worldcoin/idkit-standalone'
 
+			const result = document.querySelector('.result');
 			IDKit.init({
-				signal: 'test_signal',
-				app_id: 'app_ce4cb73cb75fc3b73b71ffb4de178410',
-				action: 'test-action',
-				bridge_url: 'https://wallet-bridge.stage-crypto.worldcoin.org',
-				action_description: 'Test action description',
-				handleVerify: response => {
-					// verify the IDKIt proof, throw an error to show the error screen
-				},
+				app_id: 'app_staging_761b8c885d9d6d3bfc3f629afe2bd3d9',
+				action: 'hello',
+				handleVerify: response => {},
 				onSuccess: response => {
-					console.log(response)
+					result.classList.add('success');
+					result.innerHTML = JSON.stringify(response, null, 2);
+				},
+				onError: response => {
+					result.classList.remove('success');
+					result.innerHTML = JSON.stringify(response, null, 2);
 				},
 			})
 
-			document.getElementById('open-idkit').addEventListener('click', async () => {
-				await IDKit.open()
-			})
+			document.getElementById('open-idkit')
+			.addEventListener('click', async () => { await IDKit.open(); });
 		</script>
 	</body>
 </html>
